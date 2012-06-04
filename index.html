@@ -1,0 +1,92 @@
+<!doctype html>
+<html>
+<head>
+	<title>WebSockets Balloon Game</title>
+    <link rel="stylesheet" href="css/global.css" type="text/css" media="all" />
+    <link rel="stylesheet" href="css/jquery-ui.css" type="text/css" media="all" />
+
+    <script type="text/javascript" src="js/vendors/jquery.js"></script>
+    <script type="text/javascript" src="js/vendors/jquery-ui.js"></script>
+    <script type="text/javascript" src="js/vendors/jquery-animate-enhanced.js"></script>
+</head>
+<body>
+
+    <div id="stage">
+        <ul id="score-board"></ul>
+    </div>
+
+    <script type="text/javascript" src="js/vendors/handlebars.js"></script>
+    <script type="text/javascript" src="js/libs/Utils.js"></script>
+    <script type="text/javascript" src="js/libs/BalloonPopper/BalloonPopper.js"></script>
+    <script type="text/javascript" src="js/libs/BalloonPopper/Balloon.js"></script>
+
+    <!-- begin websocket code -->
+    <script type="text/javascript" src="js/libs/BalloonPopper/BalloonPopperWebSocket.js"></script>
+    <div id="player-name-dialog" title="Balloon Popper!" style="display:none;">
+        <form>
+            <label>Enter your name:</label>
+            <input type="text" id="player-name-input" />
+            <input type="submit" />
+        </form>
+    </div>
+    
+    <div id="game-over" style="display:none;" title="Game Over">
+        <h2>GAME OVER MAHHHN</h2>
+    </div>
+
+    <script type="text/javascript">
+
+        var Socket = new BalloonPopperWebSocket();
+
+        var Game = new BalloonPopper({
+            hooker: Socket, // websocket code
+            balloon: Balloon,
+            elements: {
+                stage: $('#stage'),
+                score_board: $('#score-board')
+            },
+            callbacks: {
+                // When the game is over...
+                end: function(){
+                    $('#game-over').dialog({
+                        modal: true,
+                        buttons: {
+                            "Ok": function(){
+                                $(this).dialog('close');
+                            }
+                        }
+                    })
+                }
+            }
+        });
+
+        Socket.ready(function(){
+            $(function(){
+                var $dialog = $('#player-name-dialog');
+                $dialog.dialog({
+                    modal: true,
+                    position: 'center'
+                }).find('form').submit(function(){
+
+                    var player_name = $.trim($('#player-name-input').val());
+                    if(!player_name)
+                    {
+                        alert('Enter a name, silly');
+                        return false;
+                    }
+
+                    $dialog.dialog('close');
+                    Socket.setGame(Game);
+                    Game.start({ name: player_name });
+                    return false;
+                });
+
+            });
+        });
+
+    </script>
+
+    <!-- end websocket code -->
+
+</body>
+</html>
