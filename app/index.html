@@ -31,7 +31,8 @@
     </div>
     
     <div id="game-over" style="display:none;" title="Game Over">
-        <h2>GAME OVER MAHHHN</h2>
+        <h2>GAME OVER MAHHHN!</h2>
+        <span id="game-winner"></span>
     </div>
 
     <script type="text/javascript">
@@ -47,7 +48,13 @@
             },
             callbacks: {
                 // When the game is over...
-                end: function(){
+                end: function(player_opts){
+
+                    if(player_opts)
+                    {
+                        $('#game-winner').html('And the winner is <strong>' + player_opts.name + '</strong> with <strong>' + player_opts.score + '</strong> points!');
+                    }
+
                     $('#game-over').dialog({
                         modal: true,
                         buttons: {
@@ -55,7 +62,7 @@
                                 $(this).dialog('close');
                             }
                         }
-                    })
+                    });
                 }
             }
         });

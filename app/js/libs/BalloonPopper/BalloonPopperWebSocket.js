@@ -31,8 +31,6 @@ var BalloonPopperWebSocket = function(opts)
 
     self.Game = null; // Instance of our game.
     self.ready_callback = function(){};
-    self.players = {};
-    self.player_opts = {};
 
 }
 
@@ -154,20 +152,6 @@ BalloonPopperWebSocket.prototype = {
 
     },
 
-    /*
-     * Broadcasting an event.
-     * When we start our game. Call this hook.
-     *
-     * @param {Object} player_opts The player options
-     */
-    hookStart: function(player_opts)
-    {
-
-        var self = this;
-
-        self.player_opts = player_opts;
-
-    },
 
     /*
      * Broadcasting an event.

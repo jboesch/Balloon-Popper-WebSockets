@@ -15,6 +15,7 @@ var BalloonPopper = function(opts)
         templates: {
             player: '<li id="li-{{id}}" class="{{you}}"><span class="score" style="background:{{color}}">{{score}}</span><span id="{{id}}" class="player">{{name}}</span></li>'
         },
+        max_score: 5,
         elements: {
             stage: null,
             score_board: null
@@ -98,7 +99,6 @@ BalloonPopper.prototype = {
             self.drawBalloon();
         }, 1000);
 
-        self.callbackHook('start', self.player_opts);
         self.addPlayerToScoreboard(self.player_opts, true);
 
     },
@@ -106,13 +106,13 @@ BalloonPopper.prototype = {
     /*
      * When the game is over or the server has been disconnected
      */
-    end: function()
+    end: function(player_opts)
     {
 
         var self = this;
 
         clearInterval(self.balloon_interval);
-        self.opts.callbacks.end();
+        self.opts.callbacks.end(player_opts);
 
     },
 
@@ -232,6 +232,11 @@ BalloonPopper.prototype = {
         var score_el = self.opts.elements.score_board.find('#li-' + player_opts.uid + ' .score');
 
         score_el.text(score);
+
+        if(score == self.opts.max_score)
+        {
+            self.end(player_opts);
+        }
 
     },
 
