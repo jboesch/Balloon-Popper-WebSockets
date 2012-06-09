@@ -29,7 +29,7 @@
             <input type="submit" />
         </form>
     </div>
-    
+
     <div id="game-over" style="display:none;" title="Game Over">
         <h2>GAME OVER MAHHHN!</h2>
         <span id="game-winner"></span>
@@ -37,10 +37,10 @@
 
     <script type="text/javascript">
 
-        //var Socket = new BalloonPopperWebSocket();
+        var Socket = new BalloonPopperWebSocket(); // ADD
 
         var Game = new BalloonPopper({
-            //hook: Socket, // websocket code
+            hook: Socket, // ADD
             balloon: Balloon,
             elements: {
                 stage: $('#stage'),
@@ -67,11 +67,13 @@
             }
         });
 
-        Game.start({
-            name: 'Billy Bob'
-        });
+        // REMOVE
+//        Game.start({
+//            name: 'Billy Bob'
+//        });
 
-        /*Socket.ready(function(){
+        // ADD
+        Socket.ready(function(){
             $(function(){
                 var $dialog = $('#player-name-dialog');
                 $dialog.dialog({
@@ -93,7 +95,7 @@
                 });
 
             });
-        });*/
+        });
 
     </script>
 

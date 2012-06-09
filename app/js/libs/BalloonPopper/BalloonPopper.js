@@ -10,7 +10,7 @@ var BalloonPopper = function(opts)
 
     // Some default options to be filled in
     var default_opts = {
-        hooker: null, // hook for callbacks
+        hook: null, // hook for callbacks
         balloon: null,
         templates: {
             player: '<li id="li-{{id}}" class="{{you}}"><span class="score" style="background:{{color}}">{{score}}</span><span id="{{id}}" class="player">{{name}}</span></li>'
@@ -129,10 +129,10 @@ BalloonPopper.prototype = {
         var hook_uc = hook.charAt(0).toUpperCase();
         var hook_func = 'hook' + hook_uc + hook.substr(1);
 
-        if(self.opts.hooker && self.opts.hooker[hook_func])
+        if(self.opts.hook && self.opts.hook[hook_func])
         {
             var args = Array.prototype.slice.call(arguments, 1);
-            self.opts.hooker[hook_func].apply(self.opts.hooker, args);
+            self.opts.hook[hook_func].apply(self.opts.hook, args);
         }
 
     },
