@@ -73,14 +73,41 @@
 
                 <section>
                     <h2>The problem</h2>
-                    <p>Ajax polling opens a new connection every request. This means it needs to establish a new connection to the server and the server has to give us a response.</p>
+                    <ul>
+                        <li>Ajax polling opens a new connection every request. This means it needs to establish a new connection to the server and the server has to give us a response.</li>
+                        <li>The HTTP protocol is half-duplex.</li>
+                        <li>Large HTTP headers (up to 2000 bytes)</li>
+                    </ul>
                     <img src="img/ws-pic-ajax-polling.jpg" />
                 </section>
 
                 <section>
                     <h2>WebSockets to the rescue!</h2>
                     <p>User connects with a single socket</p>
+                    <ul>
+                        <li>Handshake happens between client and server.</li>
+                        <li>Allows for full-duplex communication between client and server.</li>
+                    </ul>
                     <img src="img/ws-pic-websockets.jpg" />
+                </section>
+
+                <section>
+                    <h2>The code</h2>
+                    <pre><code>var ws = new WebSocket('ws://localhost');
+
+ws.onopen = function(){
+    // do something when the socket connects successfully
+}
+ws.onmessage = function(evt){
+    // message is contained in evt.data
+}
+ws.onerror = function(){
+    // do something when an error occurs
+}
+ws.onclose = function(){
+    // do something when the socket is closed
+}
+                    </code></pre>
                 </section>
 
                 <section>
