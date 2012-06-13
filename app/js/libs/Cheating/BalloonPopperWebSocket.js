@@ -10,7 +10,7 @@ var BalloonPopperWebSocket = function()
 
     // Some options
     self.opts = {
-        host: "ws://172.16.1.80:8080"
+        host: "ws://10.10.220.184:8080"
     };
 
     // Write your code in the same way as for native WebSocket:
