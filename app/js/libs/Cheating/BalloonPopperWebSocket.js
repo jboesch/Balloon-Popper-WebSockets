@@ -3,18 +3,15 @@
  *
  * @param {Object} opts Any options to pass
  */
-var BalloonPopperWebSocket = function(opts)
+var BalloonPopperWebSocket = function()
 {
 
     var self = this;
 
-    // Some default options to be filled in
-    var default_opts = {
-        host: "ws://localhost:8080"
+    // Some options
+    self.opts = {
+        host: "ws://172.16.1.80:8080"
     };
-
-    // Merge in some options
-    self.opts = $.extend(true, {}, default_opts, opts);
 
     // Write your code in the same way as for native WebSocket:
     if(window.WebSocket)
@@ -57,6 +54,17 @@ BalloonPopperWebSocket.prototype = {
             self.onClose.apply(self, arguments);
         };
 
+        window.onbeforeunload = function()
+        {
+            if(self.Game)
+            {
+                self.socket.send(JSON.stringify({
+                    remove: true,
+                    uid: self.Game.player_opts.uid
+                }));
+            }
+        }
+
     },
 
     /*
@@ -91,22 +99,31 @@ BalloonPopperWebSocket.prototype = {
 
         var data = JSON.parse(e.data);
 
-        // Adding someone to the game
-        if(data.adding && !self.Game.playerExists(data.uid))
+        // Someone who is at the "enter your name screen" may be
+        // getting messages, prevent that.
+        if(!self.Game)
         {
-            self.Game.addPlayerToScoreboard(data);
+            return;
         }
 
-        // Add points
-        if(data.score)
+        // Adding someone to the game
+        if(data.score || data.adding)
         {
             if(!self.Game.playerExists(data.uid))
             {
                 self.Game.addPlayerToScoreboard(data);
             }
 
-            self.Game.setScore(data, data.score);
+            if(data.score)
+            {
+                self.Game.setScore(data, data.score);
+            }
+        }
 
+        // Someone has left the game
+        if(data.remove)
+        {
+            self.Game.removePlayer(data);
         }
 
     },

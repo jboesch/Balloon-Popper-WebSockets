@@ -15,7 +15,7 @@ var BalloonPopper = function(opts)
         templates: {
             player: '<li id="li-{{id}}" class="{{you}}"><span class="score" style="background:{{color}}">{{score}}</span><span id="{{id}}" class="player">{{name}}</span></li>'
         },
-        max_score: 5,
+        max_score: 35,
         elements: {
             stage: null,
             score_board: null
@@ -197,6 +197,20 @@ BalloonPopper.prototype = {
         self.opts.elements.score_board.append(tpl);
 
         self.callbackHook('addPlayerToScoreboard', player_opts);
+
+    },
+
+    /*
+     * Remove a player from the scoreboard/game
+     *
+     * @param {Object} player_opts The player options
+     */
+    removePlayer: function(player_opts)
+    {
+
+        var self = this;
+
+        self.opts.elements.score_board.find('#li-' + player_opts.uid).remove();
 
     },
 

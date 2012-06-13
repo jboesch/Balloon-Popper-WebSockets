@@ -1,7 +1,7 @@
 require 'em-websocket'
 
 SOCKETS = []
-EventMachine::WebSocket.start(:host => "localhost", :port => 8080) do |ws|
+EventMachine::WebSocket.start(:host => "172.16.1.80", :port => 8080) do |ws|
 
   ws.onopen do
     # When someone connects I want to add that socket to the SOCKETS array that
